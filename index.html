@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>⚽</text></svg>">
 </head>
 <body>
     <!-- Header -->
@@ -51,7 +51,7 @@
                     </h1>
                     <p class="hero-description">
                         Descubra oportunidades em clubes e academias de futebol em todo o Brasil. 
-                        Digite seu CEP e encontre peneiras abertas na sua região.
+                        Digite sua localização e encontre peneiras abertas na sua região.
                     </p>
                 </div>
                 
@@ -61,11 +61,10 @@
                             <div class="input-wrapper">
                                 <i class="fas fa-map-marker-alt search-icon"></i>
                                 <input 
-                                    type="text" 
+                                    type="number" 
                                     id="cep-input" 
-                                    placeholder="Digite seu CEP (ex: 01310-100)..."
+                                    placeholder="Digite seu CEP (apenas números)"
                                     class="search-input"
-                                    maxlength="9"
                                 >
                                 <button type="button" id="get-location-btn" class="location-btn" title="Usar minha localização atual">
                                     <i class="fas fa-crosshairs"></i>
@@ -76,23 +75,15 @@
                                 <span>Buscar Peneiras</span>
                             </button>
                         </div>
-                        
-                        <!-- Informações do endereço encontrado -->
-                        <div id="address-info" class="address-info" style="display: none;">
-                            <div class="address-details">
-                                <i class="fas fa-check-circle"></i>
-                                <span id="address-text"></span>
-                            </div>
-                        </div>
                     </div>
                     
                     <div class="search-suggestions">
-                        <span class="suggestions-label">CEPs populares:</span>
+                        <span class="suggestions-label">Sugestões populares:</span>
                         <div class="suggestions-buttons">
-                            <button class="suggestion-btn" data-cep="01310-100">São Paulo - Centro</button>
-                            <button class="suggestion-btn" data-cep="22071-900">Rio de Janeiro - Copacabana</button>
-                            <button class="suggestion-btn" data-cep="30112-000">Belo Horizonte - Centro</button>
-                            <button class="suggestion-btn" data-cep="90010-150">Porto Alegre - Centro</button>
+                            <button class="suggestion-btn" data-location="São Paulo, SP">São Paulo</button>
+                            <button class="suggestion-btn" data-location="Rio de Janeiro, RJ">Rio de Janeiro</button>
+                            <button class="suggestion-btn" data-location="Belo Horizonte, MG">Belo Horizonte</button>
+                            <button class="suggestion-btn" data-location="Porto Alegre, RS">Porto Alegre</button>
                         </div>
                     </div>
                 </div>
@@ -149,7 +140,7 @@
                 </div>
                 <h3>Nenhuma peneira encontrada</h3>
                 <p>Não encontramos peneiras na sua região no momento. Tente expandir sua busca ou verifique novamente em breve.</p>
-                <button class="btn-primary" onclick="document.getElementById('cep-input').focus()">
+                <button class="btn-primary" onclick="document.getElementById(\'cep-input\').focus()">
                     Tentar Nova Busca
                 </button>
             </div>
@@ -173,7 +164,7 @@
                         </div>
                         <div class="step-content">
                             <h3>Informe seu CEP</h3>
-                            <p>Digite seu CEP para encontrarmos automaticamente sua localização e peneiras próximas.</p>
+                            <p>Digite seu CEP para encontrar peneiras próximas.</p>
                         </div>
                     </div>
                     
@@ -338,7 +329,7 @@
                 </div>
                 <h2>Pronto para Encontrar sua Oportunidade?</h2>
                 <p>Não perca mais tempo! Comece sua busca agora e dê o primeiro passo rumo ao futebol profissional.</p>
-                <button class="cta-button" onclick="document.getElementById('cep-input').focus(); document.getElementById('inicio').scrollIntoView({behavior: 'smooth'})">
+                <button class="cta-button" onclick="document.getElementById(\'location-input\').focus(); document.getElementById(\'inicio\').scrollIntoView({behavior: \'smooth\'})\">
                     <i class="fas fa-search"></i>
                     <span>Buscar Peneiras Agora</span>
                 </button>
@@ -437,7 +428,7 @@
             <div class="spinner-icon">
                 <i class="fas fa-futbol fa-spin"></i>
             </div>
-            <p id="loading-text">Buscando peneiras...</p>
+            <p id="loading-address">Buscando peneiras...</p>
             <div class="loading-progress">
                 <div class="progress-bar"></div>
             </div>
@@ -452,4 +443,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
