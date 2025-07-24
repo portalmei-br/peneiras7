@@ -365,8 +365,8 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
     return R * c;
 }
 
-// Função principal de busca
-async function handleSearch() {
+// Função principal de busca (CORRIGIDA COM JSONP)
+function handleSearch() {
     const cep = cepInput.value.replace(/\D/g, '');
 
     if (cep.length !== 8) {
@@ -377,29 +377,45 @@ async function handleSearch() {
 
     showLoading(true);
 
-    try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-
+    // 1. Define uma função de callback global
+    // O nome da função deve ser único para cada requisição para evitar conflitos
+    const callbackName = 'cepCallback_' + new Date().getTime();
+    window[callbackName] = (data) => {
+        // 4. Esta função será chamada pela API do ViaCEP com os dados do CEP
         if (data.erro) {
             showNotification('CEP não encontrado. Verifique o número digitado.', 'error');
             hideLoading();
-            return;
+        } else {
+            const address = `${data.localidade}, ${data.uf}`;
+            loadingAddress.textContent = `Buscando peneiras próximas a ${address}`;
+
+            // Simular delay de busca
+            setTimeout(() => {
+                searchPeneiras(address);
+            }, 1500);
         }
 
-        const address = `${data.localidade}, ${data.uf}`;
-        loadingAddress.textContent = `Buscando peneiras próximas a ${address}`;
+        // 5. Limpa o script e a função de callback da memória
+        document.body.removeChild(script);
+        delete window[callbackName];
+    };
 
-        // Simular delay de busca
-        setTimeout(() => {
-            searchPeneiras(address);
-        }, 1500);
+    // 2. Cria um elemento de script
+    const script = document.createElement('script');
+    script.src = `https://viacep.com.br/ws/${cep}/json/?callback=${callbackName}`;
 
-    } catch (error) {
+    // Tratamento de erro caso a requisição falhe (ex: sem internet )
+    script.onerror = () => {
         showNotification('Erro ao buscar CEP. Tente novamente.', 'error');
         hideLoading();
-    }
+        document.body.removeChild(script);
+        delete window[callbackName];
+    };
+    
+    // 3. Adiciona o script ao corpo do documento, o que dispara a requisição
+    document.body.appendChild(script);
 }
+
 
 // Função para buscar peneiras
 function searchPeneiras(location) {
